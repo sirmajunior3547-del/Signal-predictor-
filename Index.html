@@ -5,22 +5,34 @@
 <title>SignalPredictor</title>
 
 <style>
+
 body{
-    font-family: Arial, sans-serif;
-    background:#111;
+    font-family:Arial, sans-serif;
+    background:#0f0f0f;
     color:white;
     text-align:center;
 }
 
 h1{
     color:red;
+    margin-top:20px;
+}
+
+#card{
+    background:#151515;
+    width:90%;
+    max-width:400px;
+    margin:30px auto;
+    padding:25px;
+    border-radius:15px;
+    box-shadow:0 0 15px rgba(255,0,0,0.4);
 }
 
 #spinner{
-    width:80px;
-    height:80px;
-    border:8px solid #444;
-    border-top:8px solid red;
+    width:90px;
+    height:90px;
+    border:10px solid #333;
+    border-top:10px solid red;
     border-radius:50%;
     margin:20px auto;
     display:none;
@@ -33,55 +45,65 @@ h1{
 }
 
 button{
-    padding:12px 25px;
+    padding:15px 35px;
     background:red;
     color:white;
     border:none;
-    font-size:18px;
-    border-radius:5px;
+    font-size:20px;
+    border-radius:8px;
     cursor:pointer;
 }
 
 #result{
-    font-size:28px;
-    margin:20px;
+    font-size:42px;
+    margin:25px 0;
     color:lime;
+    font-weight:bold;
 }
 
 .sites img{
     width:70px;
     margin:10px;
+    background:white;
+    padding:5px;
+    border-radius:8px;
 }
 
 footer{
-    margin-top:40px;
+    margin-top:25px;
     color:#aaa;
+    font-size:14px;
 }
+
 </style>
 </head>
 
 <body>
 
 <h1>SignalPredictor</h1>
-<p>Live Aviator Signals</p>
+<p>Live Aviator Signal Generator</p>
+
+<div id="card">
 
 <div id="spinner"></div>
 
+<div id="result">---</div>
+
 <button onclick="generate()">Generate Signal</button>
 
-<div id="result"></div>
+</div>
 
-<button id="getBtn" onclick="goToGame()" style="display:none;">GET SIGNAL</button>
-
-<h3>Supported Sites</h3>
+<h3>Supported Betting Sites</h3>
 
 <div class="sites">
+
 <img src="https://upload.wikimedia.org/wikipedia/commons/2/2e/Betika_logo.png">
-<img src="https://odibets.com/img/logo.png">
+<img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Odibets_logo.png">
 <img src="https://upload.wikimedia.org/wikipedia/commons/5/5f/1xbet_logo.png">
-<img src="https://sportybet.com/logo.png">
-<img src="https://betwinner.com/logo.png">
-<img src="https://melbet.com/logo.png">
+<img src="https://upload.wikimedia.org/wikipedia/commons/8/86/SportyBet_logo.png">
+<img src="https://upload.wikimedia.org/wikipedia/commons/3/32/Betwinner_logo.png">
+<img src="https://upload.wikimedia.org/wikipedia/commons/4/49/Melbet_logo.png">
+
 </div>
 
 <audio id="sound" src="https://assets.mixkit.co/active_storage/sfx/2000/2000-preview.mp3"></audio>
@@ -94,30 +116,32 @@ Powered by SPRIBE
 
 function generate(){
 
-    document.getElementById("spinner").style.display="block";
-    document.getElementById("result").innerHTML="";
-    document.getElementById("getBtn").style.display="none";
+    let spinner=document.getElementById("spinner");
+    let result=document.getElementById("result");
+    let sound=document.getElementById("sound");
 
-    let audio=document.getElementById("sound");
-    audio.play();
+    spinner.style.display="block";
+    result.innerHTML="Processing...";
+
+    sound.volume=1.0;
+    sound.play();
+
+    setTimeout(()=>{
+        sound.pause();
+        sound.currentTime=0;
+    },6000);
 
     setTimeout(()=>{
 
-        document.getElementById("spinner").style.display="none";
+        spinner.style.display="none";
 
         let num=(Math.random()*200+1).toFixed(2);
 
-        document.getElementById("result").innerHTML="Next Crash: "+num+"x";
+        result.innerHTML=num+"x";
 
         localStorage.setItem("aviatorSignal",num);
 
-        document.getElementById("getBtn").style.display="inline-block";
-
-    },5000);
-}
-
-function goToGame(){
-    window.location.href="aviator.html";
+    },6000);
 }
 
 </script>
