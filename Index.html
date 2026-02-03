@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Signal Generator</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    background: #0d0d0d;
+    color: #fff;
+  }
+  h1 {
+    margin-top: 30px;
+    font-size: 2.5em;
+    color: #ff4c4c;
+  }
+  #multiplier {
+    font-size: 4em;
+    margin: 40px;
+    color: #ff4c4c;
+    transition: all 0.3s ease;
+  }
+  #history {
+    margin-top: 20px;
+    list-style-type: none;
+    padding: 0;
+  }
+  button {
+    padding: 15px 30px;
+    font-size: 1.2em;
+    margin: 20px;
+    cursor: pointer;
+    background: #ff4c4c;
+    border: none;
+    border-radius: 10px;
+    color: #fff;
+    transition: transform 0.2s;
+  }
+  button:hover {
+    transform: scale(1.1);
+  }
+  .spinner {
+    border: 8px solid #333;
+    border-top: 8px solid #ff4c4c;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    animation: spin 1s linear infinite;
+    margin: 20px auto;
+  }
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+  footer {
+    margin-top: 50px;
+    font-size: 1em;
+    color: #ccc;
+  }
+  footer img {
+    vertical-align: middle;
+    height: 20px;
+    margin-left: 5px;
+  }
+</style>
+</head>
+<body>
+
+<h1>Signal Generator</h1>
+<div class="spinner"></div>
+<div id="multiplier">1.00</div>
+
+<button onclick="generateMultiplier()">Get Signal</button>
+
+<h3>Round: <span id="round">0</span></h3>
+<h3>History:</h3>
+<ul id="history"></ul>
+
+<footer>Powered by SPRIBE <img src="https://upload.wikimedia.org/wikipedia/commons/3/38/Spribe_logo.png" alt="Spribe Logo"></footer>
+
+<script>
+let round = 0;
+let history = [];
+
+function generateMultiplier() {
+    round++;
+    document.getElementById('round').innerText = round;
+
+    // Generate random multiplier 1.00 → 250.00
+    let multiplier = (Math.random() * 249 + 1).toFixed(2);
+    document.getElementById('multiplier').innerText = multiplier;
+
+    // Add to history
+    history.unshift(multiplier);
+    if (history.length > 10) history.pop();
+    updateHistory();
+
+    // Simulate sending multiplier to Website 2 (for later real API)
+    window.latestMultiplier = multiplier;
+}
+
+function updateHistory() {
+    const historyList = document.getElementById('history');
+    historyList.innerHTML = '';
+    history.forEach(mult => {
+        let li = document.createElement('li');
+        li.innerText = mult;
+        historyList.appendChild(li);
+    });
+}
+</script>
+
+</body>
+</html>
