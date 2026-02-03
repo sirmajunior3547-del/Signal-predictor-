@@ -2,114 +2,124 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Signal Generator</title>
+<title>SignalPredictor</title>
+
 <style>
-  body {
+body{
     font-family: Arial, sans-serif;
-    text-align: center;
-    background: #0d0d0d;
-    color: #fff;
-  }
-  h1 {
-    margin-top: 30px;
-    font-size: 2.5em;
-    color: #ff4c4c;
-  }
-  #multiplier {
-    font-size: 4em;
-    margin: 40px;
-    color: #ff4c4c;
-    transition: all 0.3s ease;
-  }
-  #history {
-    margin-top: 20px;
-    list-style-type: none;
-    padding: 0;
-  }
-  button {
-    padding: 15px 30px;
-    font-size: 1.2em;
-    margin: 20px;
-    cursor: pointer;
-    background: #ff4c4c;
-    border: none;
-    border-radius: 10px;
-    color: #fff;
-    transition: transform 0.2s;
-  }
-  button:hover {
-    transform: scale(1.1);
-  }
-  .spinner {
-    border: 8px solid #333;
-    border-top: 8px solid #ff4c4c;
-    border-radius: 50%;
-    width: 60px;
-    height: 60px;
-    animation: spin 1s linear infinite;
-    margin: 20px auto;
-  }
-  @keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-  }
-  footer {
-    margin-top: 50px;
-    font-size: 1em;
-    color: #ccc;
-  }
-  footer img {
-    vertical-align: middle;
-    height: 20px;
-    margin-left: 5px;
-  }
+    background:#111;
+    color:white;
+    text-align:center;
+}
+
+h1{
+    color:red;
+}
+
+#spinner{
+    width:80px;
+    height:80px;
+    border:8px solid #444;
+    border-top:8px solid red;
+    border-radius:50%;
+    margin:20px auto;
+    display:none;
+    animation:spin 1s linear infinite;
+}
+
+@keyframes spin{
+    0%{transform:rotate(0deg);}
+    100%{transform:rotate(360deg);}
+}
+
+button{
+    padding:12px 25px;
+    background:red;
+    color:white;
+    border:none;
+    font-size:18px;
+    border-radius:5px;
+    cursor:pointer;
+}
+
+#result{
+    font-size:28px;
+    margin:20px;
+    color:lime;
+}
+
+.sites img{
+    width:70px;
+    margin:10px;
+}
+
+footer{
+    margin-top:40px;
+    color:#aaa;
+}
 </style>
 </head>
+
 <body>
 
-<h1>Signal Generator</h1>
-<div class="spinner"></div>
-<div id="multiplier">1.00</div>
+<h1>SignalPredictor</h1>
+<p>Live Aviator Signals</p>
 
-<button onclick="generateMultiplier()">Get Signal</button>
+<div id="spinner"></div>
 
-<h3>Round: <span id="round">0</span></h3>
-<h3>History:</h3>
-<ul id="history"></ul>
+<button onclick="generate()">Generate Signal</button>
 
-<footer>Powered by SPRIBE <img src="https://upload.wikimedia.org/wikipedia/commons/3/38/Spribe_logo.png" alt="Spribe Logo"></footer>
+<div id="result"></div>
+
+<button id="getBtn" onclick="goToGame()" style="display:none;">GET SIGNAL</button>
+
+<h3>Supported Sites</h3>
+
+<div class="sites">
+<img src="https://upload.wikimedia.org/wikipedia/commons/2/2e/Betika_logo.png">
+<img src="https://odibets.com/img/logo.png">
+<img src="https://upload.wikimedia.org/wikipedia/commons/5/5f/1xbet_logo.png">
+<img src="https://sportybet.com/logo.png">
+<img src="https://betwinner.com/logo.png">
+<img src="https://melbet.com/logo.png">
+</div>
+
+<audio id="sound" src="https://assets.mixkit.co/active_storage/sfx/2000/2000-preview.mp3"></audio>
+
+<footer>
+Powered by SPRIBE
+</footer>
 
 <script>
-let round = 0;
-let history = [];
 
-function generateMultiplier() {
-    round++;
-    document.getElementById('round').innerText = round;
+function generate(){
 
-    // Generate random multiplier 1.00 → 250.00
-    let multiplier = (Math.random() * 249 + 1).toFixed(2);
-    document.getElementById('multiplier').innerText = multiplier;
+    document.getElementById("spinner").style.display="block";
+    document.getElementById("result").innerHTML="";
+    document.getElementById("getBtn").style.display="none";
 
-    // Add to history
-    history.unshift(multiplier);
-    if (history.length > 10) history.pop();
-    updateHistory();
+    let audio=document.getElementById("sound");
+    audio.play();
 
-    // Simulate sending multiplier to Website 2 (for later real API)
-    window.latestMultiplier = multiplier;
+    setTimeout(()=>{
+
+        document.getElementById("spinner").style.display="none";
+
+        let num=(Math.random()*200+1).toFixed(2);
+
+        document.getElementById("result").innerHTML="Next Crash: "+num+"x";
+
+        localStorage.setItem("aviatorSignal",num);
+
+        document.getElementById("getBtn").style.display="inline-block";
+
+    },5000);
 }
 
-function updateHistory() {
-    const historyList = document.getElementById('history');
-    historyList.innerHTML = '';
-    history.forEach(mult => {
-        let li = document.createElement('li');
-        li.innerText = mult;
-        historyList.appendChild(li);
-    });
+function goToGame(){
+    window.location.href="aviator.html";
 }
+
 </script>
 
 </body>
