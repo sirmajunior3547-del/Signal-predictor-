@@ -5,76 +5,89 @@
 <title>SignalPredictor</title>
 
 <style>
-
-body{
-    font-family:Arial, sans-serif;
-    background:#0f0f0f;
-    color:white;
-    text-align:center;
+body {
+    font-family: Arial, sans-serif;
+    background: #0f0f0f;
+    color: white;
+    text-align: center;
+    margin: 0;
+    padding: 0;
 }
 
-h1{
-    color:red;
-    margin-top:20px;
+h1 {
+    color: red;
+    margin-top: 20px;
 }
 
-#card{
-    background:#151515;
-    width:90%;
-    max-width:400px;
-    margin:30px auto;
-    padding:25px;
-    border-radius:15px;
-    box-shadow:0 0 15px rgba(255,0,0,0.4);
+#card {
+    background: #151515;
+    width: 90%;
+    max-width: 450px;
+    margin: 40px auto;
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: 0 0 20px rgba(255, 0, 0, 0.5);
 }
 
-#spinner{
-    width:90px;
-    height:90px;
-    border:10px solid #333;
-    border-top:10px solid red;
-    border-radius:50%;
-    margin:20px auto;
-    display:none;
-    animation:spin 1s linear infinite;
+#spinner {
+    width: 100px;
+    height: 100px;
+    border: 10px solid #333;
+    border-top: 10px solid red;
+    border-radius: 50%;
+    margin: 20px auto;
+    display: none;
+    animation: spin 1s linear infinite;
 }
 
-@keyframes spin{
-    0%{transform:rotate(0deg);}
-    100%{transform:rotate(360deg);}
+@keyframes spin {
+    0% {transform: rotate(0deg);}
+    100% {transform: rotate(360deg);}
 }
 
-button{
-    padding:15px 35px;
-    background:red;
-    color:white;
-    border:none;
-    font-size:20px;
-    border-radius:8px;
-    cursor:pointer;
+#result {
+    font-size: 48px;
+    margin: 30px 0;
+    color: lime;
+    font-weight: bold;
 }
 
-#result{
-    font-size:42px;
-    margin:25px 0;
-    color:lime;
-    font-weight:bold;
+button {
+    padding: 15px 40px;
+    background: red;
+    color: white;
+    border: none;
+    font-size: 20px;
+    border-radius: 8px;
+    cursor: pointer;
 }
 
-.sites img{
-    width:70px;
-    margin:10px;
-    background:white;
-    padding:5px;
-    border-radius:8px;
+.sites {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 30px;
 }
 
-footer{
-    margin-top:25px;
-    color:#aaa;
-    font-size:14px;
+.sites img {
+    width: 70px;
+    margin: 10px;
+    padding: 5px;
+    border-radius: 8px;
+    background: #111;
+    cursor: pointer;
+    transition: transform 0.3s;
 }
 
+.sites img:hover {
+    transform: scale(1.2);
+}
+
+footer {
+    margin-top: 40px;
+    color: #aaa;
+    font-size: 14px;
+}
 </style>
 </head>
 
@@ -84,26 +97,19 @@ footer{
 <p>Live Aviator Signal Generator</p>
 
 <div id="card">
-
-<div id="spinner"></div>
-
-<div id="result">---</div>
-
-<button onclick="generate()">Generate Signal</button>
-
+    <div id="spinner"></div>
+    <div id="result">---</div>
+    <button onclick="generate()">Generate Signal</button>
 </div>
 
 <h3>Supported Betting Sites</h3>
-
 <div class="sites">
-
-<img src="https://upload.wikimedia.org/wikipedia/commons/2/2e/Betika_logo.png">
-<img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Odibets_logo.png">
-<img src="https://upload.wikimedia.org/wikipedia/commons/5/5f/1xbet_logo.png">
-<img src="https://upload.wikimedia.org/wikipedia/commons/8/86/SportyBet_logo.png">
-<img src="https://upload.wikimedia.org/wikipedia/commons/3/32/Betwinner_logo.png">
-<img src="https://upload.wikimedia.org/wikipedia/commons/4/49/Melbet_logo.png">
-
+    <img src="https://upload.wikimedia.org/wikipedia/commons/2/2e/Betika_logo.png" alt="Betika">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Odibets_logo.png" alt="Odibet">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/5/5f/1xbet_logo.png" alt="1xBet">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/8/86/SportyBet_logo.png" alt="SportyBet">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/3/32/Betwinner_logo.png" alt="BetWinner">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/4/49/Melbet_logo.png" alt="Melbet">
 </div>
 
 <audio id="sound" src="https://assets.mixkit.co/active_storage/sfx/2000/2000-preview.mp3"></audio>
@@ -113,37 +119,33 @@ Powered by SPRIBE
 </footer>
 
 <script>
+function generate() {
+    const spinner = document.getElementById("spinner");
+    const result = document.getElementById("result");
+    const sound = document.getElementById("sound");
 
-function generate(){
+    spinner.style.display = "block";
+    result.innerHTML = "Processing...";
 
-    let spinner=document.getElementById("spinner");
-    let result=document.getElementById("result");
-    let sound=document.getElementById("sound");
-
-    spinner.style.display="block";
-    result.innerHTML="Processing...";
-
-    sound.volume=1.0;
+    // Play sound at full volume for ~6 seconds
+    sound.volume = 1.0;
     sound.play();
 
-    setTimeout(()=>{
+    setTimeout(() => {
         sound.pause();
-        sound.currentTime=0;
-    },6000);
+        sound.currentTime = 0;
+    }, 6000);
 
-    setTimeout(()=>{
+    // Show signal after 6 seconds
+    setTimeout(() => {
+        spinner.style.display = "none";
+        const num = (Math.random() * 200 + 1).toFixed(2);
+        result.innerHTML = num + "x";
 
-        spinner.style.display="none";
-
-        let num=(Math.random()*200+1).toFixed(2);
-
-        result.innerHTML=num+"x";
-
-        localStorage.setItem("aviatorSignal",num);
-
-    },6000);
+        // Save to localStorage for Website 2
+        localStorage.setItem("aviatorSignal", num);
+    }, 6000);
 }
-
 </script>
 
 </body>
